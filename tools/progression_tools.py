@@ -5,21 +5,15 @@ import os
 import httpx
 
 from tools.registry import registry
+from tools.firebase_auth import get_auth_headers
 
 PROGRESSION_URL = os.getenv("PROGRESSION_API_URL", "http://localhost:8000/api/v1")
-FIREBASE_TOKEN = os.getenv("FIREBASE_ID_TOKEN", "")
-
-
-def _headers() -> dict:
-    h = {}
-    if FIREBASE_TOKEN:
-        h["Authorization"] = f"Bearer {FIREBASE_TOKEN}"
-    return h
 
 
 async def _get(path: str, params: dict | None = None) -> str:
     try:
-        async with httpx.AsyncClient(base_url=PROGRESSION_URL, timeout=15, headers=_headers()) as c:
+        headers = await get_auth_headers()
+        async with httpx.AsyncClient(base_url=PROGRESSION_URL, timeout=15, headers=headers) as c:
             r = await c.get(path, params=params)
             r.raise_for_status()
             return json.dumps(r.json(), ensure_ascii=False)
@@ -29,7 +23,8 @@ async def _get(path: str, params: dict | None = None) -> str:
 
 async def _post(path: str, body: dict | None = None) -> str:
     try:
-        async with httpx.AsyncClient(base_url=PROGRESSION_URL, timeout=15, headers=_headers()) as c:
+        headers = await get_auth_headers()
+        async with httpx.AsyncClient(base_url=PROGRESSION_URL, timeout=15, headers=headers) as c:
             r = await c.post(path, json=body or {})
             r.raise_for_status()
             return json.dumps(r.json(), ensure_ascii=False)
@@ -39,7 +34,8 @@ async def _post(path: str, body: dict | None = None) -> str:
 
 async def _put(path: str, body: dict | None = None) -> str:
     try:
-        async with httpx.AsyncClient(base_url=PROGRESSION_URL, timeout=15, headers=_headers()) as c:
+        headers = await get_auth_headers()
+        async with httpx.AsyncClient(base_url=PROGRESSION_URL, timeout=15, headers=headers) as c:
             r = await c.put(path, json=body or {})
             r.raise_for_status()
             return json.dumps(r.json(), ensure_ascii=False)
