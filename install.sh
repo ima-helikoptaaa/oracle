@@ -16,7 +16,7 @@ fi
 echo "Installing Oracle tools into hermes-agent..."
 
 # Symlink tool files
-for tool_file in exodus_tools.py muse_tools.py sisyphus_tools.py progression_tools.py todoist_tools.py; do
+for tool_file in firebase_auth.py exodus_tools.py muse_tools.py sisyphus_tools.py progression_tools.py todoist_tools.py; do
     src="${ORACLE_DIR}/tools/${tool_file}"
     dst="${HERMES_TOOLS}/${tool_file}"
     if [ -L "$dst" ] || [ -f "$dst" ]; then
@@ -53,13 +53,9 @@ fi
 
 # Remind about env vars
 echo ""
-echo "Done! Now add these to ~/.hermes/.env:"
+echo "Done! Now configure ~/.hermes/.env with the required variables:"
 echo ""
-echo "  EXODUS_API_URL=http://localhost:3001/api"
-echo "  MUSE_API_URL=http://localhost:3002/api"
-echo "  SISYPHUS_API_URL=http://localhost:3003/api"
-echo "  PROGRESSION_API_URL=http://localhost:8000/api/v1"
-echo "  TODOIST_API_TOKEN=<your-token>"
+cat "${ORACLE_DIR}/.env.example"
 echo ""
 echo "For Firebase auth (Sisyphus & Progression), run:"
 echo "  python ${ORACLE_DIR}/auth_setup.py"

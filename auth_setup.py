@@ -8,6 +8,7 @@ Usage:
     python oracle/auth_setup.py
 """
 
+import html
 import http.server
 import json
 import os
@@ -95,7 +96,7 @@ def wait_for_callback() -> str:
                 self.send_response(400)
                 self.send_header("Content-Type", "text/html")
                 self.end_headers()
-                self.wfile.write(f"<h2>Auth failed: {error}</h2>".encode())
+                self.wfile.write(f"<h2>Auth failed: {html.escape(error)}</h2>".encode())
 
         def log_message(self, format, *args):
             pass  # suppress logs
