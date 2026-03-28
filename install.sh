@@ -16,7 +16,7 @@ fi
 echo "Installing Oracle tools into hermes-agent..."
 
 # Symlink tool files
-for tool_file in firebase_auth.py exodus_tools.py muse_tools.py sisyphus_tools.py progression_tools.py todoist_tools.py; do
+for tool_file in http_client.py firebase_auth.py exodus_tools.py muse_tools.py sisyphus_tools.py progression_tools.py todoist_tools.py; do
     src="${ORACLE_DIR}/tools/${tool_file}"
     dst="${HERMES_TOOLS}/${tool_file}"
     if [ -L "$dst" ] || [ -f "$dst" ]; then
